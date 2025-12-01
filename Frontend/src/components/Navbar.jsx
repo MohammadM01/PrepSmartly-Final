@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
-// import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../contexts/AuthContext";
 import logoImage from "../Assets/Images/Prepsmartly_logo.png";
 import logoWithName from "../Assets/Images/Prepsmartly_logo_name_2.jpg";
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-//   const { currentUser } = useAuth();
+  const { currentUser } = useAuth();
 
   const navItems = [
     { name: "Features", href: "#features" },
@@ -25,7 +25,7 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-0 group">
-            
+
             <div className="hidden sm:block">
               <img
                 src={logoWithName}
@@ -55,11 +55,11 @@ const Navbar = () => {
           {/* Right side controls */}
           <div className="flex items-center space-x-4">
             {/* Auth Buttons - Desktop */}
-            {/* <div className="hidden sm:flex items-center space-x-4">
+            <div className="hidden sm:flex items-center space-x-4">
               {currentUser ? (
                 <div className="flex items-center space-x-4">
                   <span className="text-[#94A3B8] text-sm hidden lg:block">
-                    {currentUser.displayName || currentUser.email}
+                    {currentUser.user_metadata?.full_name || currentUser.email}
                   </span>
                   <Link
                     to="/dashboard"
@@ -84,7 +84,7 @@ const Navbar = () => {
                   </Link>
                 </>
               )}
-            </div> */}
+            </div>
 
             {/* Mobile menu button */}
             <button
@@ -118,11 +118,11 @@ const Navbar = () => {
               ))}
 
               {/* Mobile Auth Buttons */}
-              {/* <div className="pt-4 border-t border-[#9333EA]/20">
+              <div className="pt-4 border-t border-[#9333EA]/20">
                 {currentUser ? (
                   <div className="space-y-3">
                     <span className="block text-[#94A3B8] text-sm">
-                      {currentUser.displayName || currentUser.email}
+                      {currentUser.user_metadata?.full_name || currentUser.email}
                     </span>
                     <Link
                       to="/dashboard"
@@ -150,7 +150,7 @@ const Navbar = () => {
                     </Link>
                   </div>
                 )}
-              </div> */}
+              </div>
             </div>
           </div>
         )}

@@ -1,28 +1,42 @@
 import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import { useForm } from "../hooks/useForm";
-import { validateSignInForm } from "../utils/validation";
-import Button from "../components/ui/Button";
-import Alert from "../components/ui/Alert";
-import PageTransition from "../components/layout/PageTransition";
+// import { useForm } from "../hooks/useForm";
+// import { validateSignInForm } from "../utils/validation";
+// import Button from "../components/ui/Button";
+// import Alert from "../components/ui/Alert";
+// import PageTransition from "../components/layout/PageTransition";
 import { motion } from "framer-motion";
 import { Lock, Mail, ArrowRight } from "lucide-react";
-import authIllustration from "../assets/images/auth-illustration-mirror.jpg";
+import authIllustration from "../assets/Images/auth-illustration-mirror.jpg";
+import googleIcon from "../assets/Images/google-icon.svg";
 
 const SignIn = () => {
-  const { signIn, authError, clearError, currentUser } = useAuth();
+  const { signIn, signInWithGoogle, authError, clearError, currentUser } = useAuth();
   const navigate = useNavigate();
 
   // Initialize form with validation
-  const {
-    formData,
-    errors,
-    isSubmitting,
-    handleChange,
-    handleSubmit,
-    clearErrors,
-  } = useForm({ email: "", password: "" }, validateSignInForm);
+  // Initialize form with validation
+  // const {
+  //   formData,
+  //   errors,
+  //   isSubmitting,
+  //   handleChange,
+  //   handleSubmit,
+  //   clearErrors,
+  // } = useForm({ email: "", password: "" }, validateSignInForm);
+
+  const [formData, setFormData] = React.useState({ email: "", password: "" });
+  const [errors, setErrors] = React.useState({});
+  const isSubmitting = false;
+  const clearErrors = React.useCallback(() => setErrors({}), []);
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+  const handleSubmit = (fn) => async (e) => {
+    e.preventDefault();
+    await fn(formData);
+  };
 
   // Redirect if already logged in
   useEffect(() => {
@@ -51,12 +65,12 @@ const SignIn = () => {
   };
 
   const handleFormSubmit = async (e) => {
-    e.preventDefault();
-    await handleSubmit(onSubmit);
+    await handleSubmit(onSubmit)(e);
   };
 
   return (
-    <PageTransition>
+    // <PageTransition>
+    <div>
       <div className="min-h-screen flex bg-[#0A0A0A] overflow-hidden">
         {/* Left Side - Image/Illustration */}
         <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
@@ -112,7 +126,8 @@ const SignIn = () => {
                   animate={{ opacity: 1, height: "auto" }}
                   className="mb-6"
                 >
-                  <Alert message={authError} type="error" onClose={clearError} />
+                  {/* <Alert message={authError} type="error" onClose={clearError} /> */}
+                  <div className="bg-red-500/10 border border-red-500 text-red-500 p-3 rounded">{authError}</div>
                 </motion.div>
               )}
 
@@ -171,15 +186,32 @@ const SignIn = () => {
                 </div>
 
                 {/* Submit Button */}
-                <Button
+                <button
                   type="submit"
-                  loading={isSubmitting}
                   disabled={isSubmitting}
                   className="w-full bg-gradient-to-r from-[#9333EA] to-[#7E22CE] hover:from-[#7E22CE] hover:to-[#581C87] text-white font-bold py-4 rounded-xl shadow-[0_0_20px_rgba(147,51,234,0.3)] hover:shadow-[0_0_30px_rgba(147,51,234,0.5)] transition-all flex items-center justify-center space-x-2 text-lg"
                 >
                   <span>Sign In</span>
                   <ArrowRight className="w-5 h-5" />
-                </Button>
+                </button>
+
+                <div className="relative my-6">
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t border-[#9333EA]/20"></div>
+                  </div>
+                  <div className="relative flex justify-center text-sm">
+                    <span className="px-2 bg-[#0A0A0A] text-[#94A3B8]">Or continue with</span>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => signInWithGoogle('signin')}
+                  className="w-full bg-white text-black font-bold py-4 rounded-xl hover:bg-gray-100 transition-all flex items-center justify-center space-x-2 text-lg"
+                >
+                  <img src={googleIcon} alt="Google" className="w-6 h-6" />
+                  <span>Sign in with Google</span>
+                </button>
               </form>
 
               {/* Bottom Navigation */}
@@ -198,7 +230,8 @@ const SignIn = () => {
           </div>
         </div>
       </div>
-    </PageTransition>
+    </div>
+
   );
 };
 

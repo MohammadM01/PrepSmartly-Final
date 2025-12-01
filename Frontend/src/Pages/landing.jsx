@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import heroBackground from "../Assets/Images/hero_background2.PNG";
 import Navbar from "../components/Navbar";
 
@@ -300,9 +301,11 @@ const Landing = () => {
             <button className="px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-lg font-semibold text-white shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 transition-all duration-300 transform hover:scale-105">
               Start Free Simulation
             </button>
-            <button className="px-8 py-4 border-2 border-purple-500 text-purple-300 hover:bg-purple-500/10 rounded-lg font-semibold transition-all duration-300">
-              Login / Sign Up
-            </button>
+            <Link to="/signin">
+              <button className="px-8 py-4 border-2 border-purple-500 text-purple-300 hover:bg-purple-500/10 rounded-lg font-semibold transition-all duration-300">
+                Login / Sign Up
+              </button>
+            </Link>
           </div>
 
           <div className="flex flex-wrap justify-center items-center gap-6 text-sm text-gray-400">
